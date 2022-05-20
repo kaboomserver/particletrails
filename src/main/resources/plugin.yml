@@ -1,0 +1,10 @@
+name: ParticleTrails
+main: pw.kaboom.particletrails.Main
+description: Plugin that creates particle trails behind players.
+api-version: 1.13
+version: master
+
+commands:
+   particletrails:
+      description: Creates a particle trail behind you
+      permission: particletrails.command
