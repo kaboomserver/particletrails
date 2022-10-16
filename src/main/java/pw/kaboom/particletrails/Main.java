@@ -144,19 +144,19 @@ public final class Main extends JavaPlugin implements CommandExecutor, Listener 
         return true;
     }
 
-	public List<String> onTabComplete(final CommandSender sender, final Command cmd,
-	                                  final String label, final String[] args){
-	    if (args.length == 1) {
-	        String partialName = args[0].toLowerCase();
-	        List<String> completions = new ArrayList<>();
+    public List<String> onTabComplete(final CommandSender sender, final Command cmd,
+                                      final String label, final String[] args){
+        if (args.length == 1) {
+            String partialName = args[0].toLowerCase();
+            List<String> completions = new ArrayList<>();
 
             for (String particleName : availableParticles) {
                 if (particleName.startsWith(partialName)) {
                     completions.add(particleName);
                 }
             }
-		    return completions;
-	    }
+            return completions;
+        }
         return null;
     }
 }
