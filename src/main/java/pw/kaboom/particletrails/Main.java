@@ -9,7 +9,6 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.World;
@@ -27,6 +26,9 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
+
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 
 public final class Main extends JavaPlugin implements CommandExecutor, Listener {
     private FileConfiguration config;
@@ -111,12 +113,13 @@ public final class Main extends JavaPlugin implements CommandExecutor, Listener 
     public boolean onCommand(final CommandSender sender, final Command cmd, final String label,
                              final String[] args) {
         if (sender instanceof ConsoleCommandSender) {
-            sender.sendMessage("Command has to be run by a player");
+            sender.sendMessage(Component.text("Command has to be run by a player"));
             return true;
         }
 
         if (args.length == 0) {
-            sender.sendMessage(ChatColor.RED + "Usage: /" + label + " <particle ..>");
+            sender.sendMessage(Component
+                .text("Usage: /" + label + " <control|stop>", NamedTextColor.RED));
             return true;
         }
 
@@ -125,7 +128,7 @@ public final class Main extends JavaPlugin implements CommandExecutor, Listener 
         if ("off".equalsIgnoreCase(args[0])) {
             config.set(player.getUniqueId().toString(), null);
             saveConfig();
-            player.sendMessage("You no longer have a particle trail");
+            player.sendMessage(Component.text("You no longer have a particle trail"));
             return true;
         }
 
@@ -136,11 +139,14 @@ public final class Main extends JavaPlugin implements CommandExecutor, Listener 
 
             config.set(player.getUniqueId().toString(), particleName);
             saveConfig();
-            player.sendMessage("You now have a particle trail");
+            player.sendMessage(Component.text("You now have a particle trail"));
             return true;
         }
 
-        sender.sendMessage(ChatColor.RED + "Invalid particle name " + particleName);
+        sender.sendMessage(
+            Component.text("Invalid particle name ", NamedTextColor.RED)
+                .append(Component.text(particleName))
+         );
         return true;
     }
 
