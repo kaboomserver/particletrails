@@ -119,7 +119,7 @@ public final class Main extends JavaPlugin implements CommandExecutor, Listener 
 
         if (args.length == 0) {
             sender.sendMessage(Component
-                .text("Usage: /" + label + " <control|stop>", NamedTextColor.RED));
+                .text("Usage: /" + label + " <particle ..>", NamedTextColor.RED));
             return true;
         }
 
