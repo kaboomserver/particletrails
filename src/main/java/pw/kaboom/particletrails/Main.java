@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
+import com.destroystokyo.paper.event.server.ServerTickEndEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Particle;
@@ -19,6 +20,7 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
@@ -32,45 +34,13 @@ import net.kyori.adventure.text.format.NamedTextColor;
 
 public final class Main extends JavaPlugin implements CommandExecutor, Listener {
     private FileConfiguration config;
+    long tickCount = 0L;
     final private Set<String> availableParticles = new HashSet<>();
     final private Set<String> excludedParticles = new HashSet<>();
     final int numParticles = 12;
     final double offsetX = 0.5;
     final double offsetY = 1;
     final double offsetZ = 0.5;
-
-    class Tick extends BukkitRunnable {
-        @Override
-        public void run() {
-            for (Player player: Bukkit.getOnlinePlayers()) {
-                final String playerUuid = player.getUniqueId().toString();
-
-                if (!config.contains(playerUuid)) {
-                    continue;
-                }
-
-                final String particleName = config.getString(playerUuid);
-
-                if (!availableParticles.contains(particleName)) {
-                    continue;
-                }
-
-                final Particle particle = Particle.valueOf(particleName.toUpperCase());
-                final Location location = player.getLocation();
-                location.add(location.getDirection().normalize().multiply(-1.5));
-                final World world = location.getWorld();
-                double data = 0;
-
-                if (particle.equals(Particle.NOTE)) {
-                    // Colored notes
-                    data = ThreadLocalRandom.current().nextInt(0, 16);
-                }
-
-                world.spawnParticle(particle, location, numParticles,
-                                    offsetX, offsetY, offsetZ, data);
-            }
-        }
-    }
 
     @Override
     public void onLoad() {
@@ -105,8 +75,45 @@ public final class Main extends JavaPlugin implements CommandExecutor, Listener 
     @Override
     public void onEnable() {
         config = getConfig();
-        new Tick().runTaskTimer(this, 0, 2);
+        Bukkit.getPluginManager().registerEvents(this, this);
         this.getCommand("particletrails").setExecutor(this);
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onTickEnd(final ServerTickEndEvent event) {
+        tickCount++;
+
+        if (tickCount % 2 != 0) {
+            return;
+        }
+
+        for (Player player: Bukkit.getOnlinePlayers()) {
+            final String playerUuid = player.getUniqueId().toString();
+
+            if (!config.contains(playerUuid)) {
+                continue;
+            }
+
+            final String particleName = config.getString(playerUuid);
+
+            if (!availableParticles.contains(particleName)) {
+                continue;
+            }
+
+            final Particle particle = Particle.valueOf(particleName.toUpperCase());
+            final Location location = player.getLocation();
+            location.add(location.getDirection().normalize().multiply(-1.5));
+            final World world = location.getWorld();
+            double data = 0;
+
+            if (particle.equals(Particle.NOTE)) {
+                // Colored notes
+                data = ThreadLocalRandom.current().nextInt(0, 16);
+            }
+
+            world.spawnParticle(particle, location, numParticles,
+                    offsetX, offsetY, offsetZ, data);
+        }
     }
 
     @Override
