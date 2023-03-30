@@ -3,6 +3,7 @@ main: pw.kaboom.particletrails.Main
 description: Plugin that creates particle trails behind players.
 api-version: 1.13
 version: master
+folia-supported: true
 
 commands:
    particletrails:
