@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-import com.destroystokyo.paper.event.server.ServerTickEndEvent;
+import com.destroystokyo.paper.event.server.ServerTickStartEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Particle;
@@ -34,7 +34,6 @@ import net.kyori.adventure.text.format.NamedTextColor;
 
 public final class Main extends JavaPlugin implements CommandExecutor, Listener {
     private FileConfiguration config;
-    long tickCount = 0L;
     final private Set<String> availableParticles = new HashSet<>();
     final private Set<String> excludedParticles = new HashSet<>();
     final int numParticles = 12;
@@ -80,10 +79,8 @@ public final class Main extends JavaPlugin implements CommandExecutor, Listener 
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
-    public void onTickEnd(final ServerTickEndEvent event) {
-        tickCount++;
-
-        if (tickCount % 2 != 0) {
+    public void onTickStart(final ServerTickStartEvent event) {
+        if (event.getTickNumber() % 2 != 0) {
             return;
         }
 
