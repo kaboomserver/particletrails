@@ -6,13 +6,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 
 import com.destroystokyo.paper.event.server.ServerTickStartEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.World;
+import org.bukkit.GameMode;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -22,12 +22,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.SignChangeEvent;
-import org.bukkit.event.player.PlayerCommandPreprocessEvent;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.util.Vector;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -85,6 +80,16 @@ public final class Main extends JavaPlugin implements CommandExecutor, Listener 
         }
 
         for (Player player: Bukkit.getOnlinePlayers()) {
+            if (player.isInvisible()) {
+                continue;
+            }
+
+            final GameMode gameMode = player.getGameMode();
+
+            if (gameMode.equals(GameMode.SPECTATOR)) {
+                continue;
+            }
+
             final String playerUuid = player.getUniqueId().toString();
 
             if (!config.contains(playerUuid)) {
