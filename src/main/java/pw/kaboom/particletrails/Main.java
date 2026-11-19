@@ -113,8 +113,23 @@ public final class Main extends JavaPlugin implements CommandExecutor, Listener 
                 data = ThreadLocalRandom.current().nextInt(0, 16);
             }
 
-            world.spawnParticle(particle, location, numParticles,
-                    offsetX, offsetY, offsetZ, data);
+            try {
+                world.spawnParticle(particle, location, numParticles,
+                        offsetX, offsetY, offsetZ, data);
+            } catch (final Exception e) {
+                config.set(playerUuid, null);
+
+                player.sendMessage(
+                        Component.text(
+                                "Something went wrong while displaying particle trail. " +
+                                "Please check console",
+                                NamedTextColor.RED
+                    )
+                );
+                getSLF4JLogger().error("Failed to spawn particle of type {}", particleName, e);
+
+                saveConfig();
+            }
         }
     }
 
