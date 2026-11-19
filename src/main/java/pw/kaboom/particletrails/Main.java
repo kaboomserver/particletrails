@@ -30,7 +30,6 @@ import net.kyori.adventure.text.format.NamedTextColor;
 public final class Main extends JavaPlugin implements CommandExecutor, Listener {
     private FileConfiguration config;
     final private Set<String> availableParticles = new HashSet<>();
-    final private Set<String> excludedParticles = new HashSet<>();
     final int numParticles = 12;
     final double offsetX = 0.5;
     final double offsetY = 1;
@@ -38,31 +37,14 @@ public final class Main extends JavaPlugin implements CommandExecutor, Listener 
 
     @Override
     public void onLoad() {
-        /* Fill lists */
-        Collections.addAll(
-            excludedParticles,
-            "block_crack",
-            "block_dust",
-            "block_marker",
-            "dust_color_transition",
-            "explosion_huge",
-            "falling_dust",
-            "flash",
-            "item_crack",
-            "legacy_block_crack",
-            "legacy_block_dust",
-            "legacy_falling_dust",
-            "mob_appearance",
-            "redstone",
-            "vibration"
-        );
-
         for (Particle particle : Particle.values()) {
             final String particleName = particle.toString().toLowerCase();
 
-            if (!excludedParticles.contains(particleName)) {
-                availableParticles.add(particleName);
+            if (particle.getDataType() != Void.class && particle.getDataType() != Double.class) {
+                continue;
             }
+
+            availableParticles.add(particleName);
         }
     }
 
