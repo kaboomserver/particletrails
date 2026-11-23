@@ -9,12 +9,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.List;
 
 public final class Main extends JavaPlugin {
-    private ParticleStore store;
     private ParticleCreator creator;
-
-    ParticleStore store() {
-        return store;
-    }
 
     ParticleCreator creator() {
         return creator;
@@ -22,7 +17,6 @@ public final class Main extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        this.store = new ParticleStore();
         this.creator = new ParticleCreator(this);
 
         final CommandParticleTrails command = new CommandParticleTrails(this);
