@@ -49,7 +49,7 @@ final class ParticleCreator {
                         }
 
                         final String particleName = plugin.getConfig().getString(playerUuid);
-                        if (!plugin.store().isAvailable(particleName)) {
+                        if (!ParticleStore.isAvailable(particleName)) {
                             continue;
                         }
 
@@ -72,12 +72,14 @@ final class ParticleCreator {
 
                             player.sendMessage(
                                     Component.text(
-                                            "Something went wrong while displaying particle trail. " +
-                                                    "Please check console",
+                                            "Something went wrong while displaying particle trail" +
+                                                    ". Please check console",
                                             NamedTextColor.RED
                                     )
                             );
-                            plugin.getSLF4JLogger().error("Failed to spawn particle of type {}", particleName, e);
+                            plugin.getSLF4JLogger().error(
+                                    "Failed to spawn particle of type {}", particleName, e
+                            );
 
                             plugin.saveConfig();
                         }

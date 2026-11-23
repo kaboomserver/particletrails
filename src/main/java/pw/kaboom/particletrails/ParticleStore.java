@@ -28,7 +28,6 @@ final class ParticleStore {
     @Deprecated
     private final Set<Particle> availableParticles;
 
-
     @Deprecated
     ParticleStore() {
         final Set<Particle> excludedParticles = Set.of(
@@ -52,11 +51,11 @@ final class ParticleStore {
         return availableParticles;
     }
 
-    public boolean isAvailable(final String particleName) throws IllegalArgumentException {
+    public static boolean isAvailable(final String particleName) throws IllegalArgumentException {
         return isAvailable(Particle.valueOf(particleName));
     }
 
-    public boolean isAvailable(final Particle particle) {
+    public static boolean isAvailable(final Particle particle) {
         return AVAILABLE_PARTICLES.contains(particle);
     }
 }
