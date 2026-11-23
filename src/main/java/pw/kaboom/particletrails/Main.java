@@ -5,13 +5,12 @@ import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 
 import java.util.List;
 
 public final class Main extends JavaPlugin {
-    private @MonotonicNonNull ParticleStore store;
-    private @MonotonicNonNull ParticleCreator creator;
+    private ParticleStore store;
+    private ParticleCreator creator;
 
     ParticleStore store() {
         return store;
@@ -22,12 +21,8 @@ public final class Main extends JavaPlugin {
     }
 
     @Override
-    public void onLoad() {
-        this.store = new ParticleStore();
-    }
-
-    @Override
     public void onEnable() {
+        this.store = new ParticleStore();
         this.creator = new ParticleCreator(this);
 
         final CommandParticleTrails command = new CommandParticleTrails(this);
