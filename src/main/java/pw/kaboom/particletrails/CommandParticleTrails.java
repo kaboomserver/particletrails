@@ -26,21 +26,22 @@ final class CommandParticleTrails {
     }
 
     public void build(final LiteralArgumentBuilder<CommandSourceStack> builder) {
-        builder
-                .requires(restricted(src ->
-                        src.getSender().hasPermission("particletrails.command")
-                ))
-                .then(literal("off")
-                        .executes(ctx -> {
-                            final Player sender = ctx.getSource().getPlayerOrThrow();
-                            plugin.creator().removeParticle(sender);
-                            sender.sendMessage(Component.text(
-                                    "You no longer have a particle trail"
-                            ));
-                            return Command.SINGLE_SUCCESS;
-                        })
-                );
-        for (final Particle particle : ParticleStore.AVAILABLE_PARTICLES) {
+       builder
+                    .requires(restricted(src ->
+                            src.getSender().hasPermission("particletrails.command")
+                    ))
+                    .then(literal("off")
+                            .executes(ctx -> {
+                                final Player sender = ctx.getSource().getPlayerOrThrow();
+                                plugin.creator().removeParticle(sender);
+                                sender.sendMessage(Component.text(
+                                        "You no longer have a particle trail"
+                                ));
+                                return Command.SINGLE_SUCCESS;
+                            })
+                    );
+
+        for (final Particle particle : plugin.store().availableParticles()) {
             builder
                     .then(literal(particle.toString().toLowerCase())
                             .executes(ctx -> {

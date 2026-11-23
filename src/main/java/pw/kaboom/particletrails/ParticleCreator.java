@@ -49,7 +49,7 @@ final class ParticleCreator {
                         }
 
                         final String particleName = plugin.getConfig().getString(playerUuid);
-                        if (!ParticleStore.isAvailable(particleName)) {
+                        if (!plugin.store().isAvailable(particleName)) {
                             continue;
                         }
 
