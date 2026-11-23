@@ -26,8 +26,7 @@ final class CommandParticleTrails {
     }
 
     public void build(final LiteralArgumentBuilder<CommandSourceStack> builder) {
-        for (final Particle particle : plugin.store().availableParticles()) {
-            builder
+       builder
                     .requires(restricted(src ->
                             src.getSender().hasPermission("particletrails.command")
                     ))
@@ -41,6 +40,9 @@ final class CommandParticleTrails {
                                 return Command.SINGLE_SUCCESS;
                             })
                     )
+
+        for (final Particle particle : plugin.store().availableParticles()) {
+            builder
                     .then(literal(particle.toString().toLowerCase())
                             .executes(ctx -> {
                                 final Player sender = ctx.getSource().getPlayerOrThrow();

@@ -13,7 +13,6 @@ public final class Main extends JavaPlugin {
     private @MonotonicNonNull ParticleStore store;
     private @MonotonicNonNull ParticleCreator creator;
 
-
     ParticleStore store() {
         return store;
     }
